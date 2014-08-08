@@ -2,13 +2,15 @@
 
 namespace Chevron\ErrHandler;
 
-use \Psr\Log\LoggerInterface;
+use \Psr\Log;
 /**
  * a simple uncaught exception catcher inspired by corpus/autoloader
  *
  * @package Chevron\Exception
  */
-class ExceptionHandler {
+class ExceptionHandler implements Log\LoggerAwareInterface {
+
+	use Log\LoggerAwareTrait;
 
 	/**
 	 * the current environment
@@ -61,8 +63,8 @@ class ExceptionHandler {
 	 * @param int $env The current environment
 	 * @param LoggerInterface $logger An optional logger
 	 */
-	function __construct($env, LoggerInterface $logger = null){
-		$this->env = (int)$env;
+	function __construct($env, Log\LoggerInterface $logger = null){
+		$this->env    = (int)$env;
 		$this->logger = $logger;
 	}
 

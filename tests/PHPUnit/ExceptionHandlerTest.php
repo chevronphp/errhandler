@@ -30,7 +30,7 @@ class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
+	 * @expectedException \ErrorException
 	 */
 	function test_exception_handler_error(){
 		set_error_handler(new \Chevron\ErrHandler\ErrorHandler);
