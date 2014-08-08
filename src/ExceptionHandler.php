@@ -20,7 +20,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	/**
 	 * an optional logger
 	 */
-	protected $logger;
+	// protected $logger;
 
 	/**
 	 * a dev environment
