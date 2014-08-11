@@ -78,6 +78,9 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		if($e InstanceOf \Exception){
 
 			$type = get_class($e);
+			if($this->env >= static::ENV_STAGE){
+				$type = substr($type, strrpos($type, "\\") + 1);
+			}
 
 			// use the error code unless it has a severity
 			$severity = $e->getCode();
