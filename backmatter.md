@@ -15,6 +15,10 @@
 
 [![Build Status](https://travis-ci.org/henderjon/chevron.errhandler.svg?branch=master)](https://travis-ci.org/henderjon/chevron.errhandler)
 
+#### hhvm
+
+[![HHVM Status](http://hhvm.h4cc.de/badge/henderjon/chevron-errhandler.png)](http://hhvm.h4cc.de/package/henderjon/chevron-errhandler)
+
 #### scruitinizer-ci
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/henderjon/chevron.errhandler/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/henderjon/chevron.errhandler/?branch=master)
