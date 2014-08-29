@@ -1,8 +1,8 @@
 {
-	"name"        : "henderjon/chevron-errhandler",
+	"name"        : "chevron/errhandler",
 	"type"        : "library",
-	"description" : "some error handlers",
-	"homepage"    : "http://github.com/henderjon/chevron.errhandler",
+	"description" : "an exception handler for safety and comfort",
+	"homepage"    : "http://github.com/chevronphp/errhandler",
 	"license"     : "BSD-3-Clause",
 	"authors"     : [
 		{
