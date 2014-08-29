@@ -105,7 +105,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 
 			// cleaup if we're not in DEV, strip the path off the file for security
 			$file = $e->getFile();
-			if($this->env >= static::ENV_STAGE){
+			if($this->env != static::ENV_DEV){
 				$file    = pathinfo($file, PATHINFO_BASENAME);
 			}
 
