@@ -1,4 +1,4 @@
-[![License](https://poser.pugx.org/henderjon/chevron-errhandler/license.svg)](https://packagist.org/packages/henderjon/chevron-errhandler)
+[![License](https://poser.pugx.org/chevron/errhandler/license.svg)](https://packagist.org/packages/chevron/errhandler)
 
 Copyright (c) 2012, Jon Henderson (@henderjon) All rights reserved.
 
