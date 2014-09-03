@@ -85,7 +85,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 
 		$type = get_class($e);
 		if($this->env >= static::ENV_STAGE){
-			$type = substr($type, strrpos($type, "\\") + 1);
+			$type = substr($type, trim(strrpos($type, "\\")), "\\");
 		}
 
 		// use the error code unless it has a severity
@@ -120,7 +120,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		$code    = $e->getCode();
 
 		$output .= "{$file}:{$line}" . PHP_EOL;
-		$output .= "====================================" . PHP_EOL;
+		$output .= str_repeat("=", 54) . PHP_EOL;
 		$output .= "{$type} -- Code: {$code} -- Severity: {$severity}" . PHP_EOL . PHP_EOL;
 		$output .= "{$message}" . PHP_EOL;
 
