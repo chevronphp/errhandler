@@ -85,7 +85,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 
 		$type = get_class($e);
 		if($this->env >= static::ENV_STAGE){
-			$type = substr($type, trim(strrpos($type, "\\")), "\\");
+			$type = trim(substr($type, strrpos($type, "\\")), "\\");
 		}
 
 		// use the error code unless it has a severity
