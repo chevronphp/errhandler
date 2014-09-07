@@ -150,10 +150,19 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	 */
 	function outHtml($info){
 		$output = "";
-		$output .= "<p>{$info["file"]}:{$info["line"]}</p>";
+		$output .= "<div class=\"exception\">";
+		$output .= "<p class=\"location\">{$info["file"]}:{$info["line"]}</p>";
 		$output .= "<hr />";
-		$output .= "<p>{$info["type"]} -- Code: {$info["code"]} -- Severity: {$info["severity"]}<p>";
-		$output .= "<p>{$info["message"]}</p>";
+		$output .= "<p class=\"type\">";
+			$output .= "(Type) <strong>{$info["type"]}</strong> -- ";
+			$output .= "(Code) <strong>{$info["code"]}</strong> -- ";
+			$output .= "(Severity) <strong>{$info["severity"]}</strong>";
+			// $output .= "Type: <strong>{$info["type"]}</strong> -- ";
+			// $output .= "Code: <strong>{$info["code"]}</strong> -- ";
+			// $output .= "Severity: <strong>{$info["severity"]}</strong>";
+		$output .= "</p>";
+		$output .= "<p class=\"message\">{$info["message"]}</p>";
+		$output .= "</div>";
 		return $output;
 	}
 
@@ -161,12 +170,12 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	 *
 	 */
 	function outCli($info){
-		$output = $this->$eol(2);
-		$output .= "{$info["file"]}:{$info["line"]}" . $this->$eol();
-		$output .= str_repeat("=", 54) . $this->$eol();
-		$output .= "{$info["type"]} -- Code: {$info["code"]} -- Severity: {$info["severity"]}" . $this->$eol(2);
-		$output .= "{$info["message"]}" . $this->$eol();
-		$output .= $this->$eol(2);
+		$output = $this->eol(2);
+		$output .= "{$info["file"]}:{$info["line"]}" . $this->eol();
+		$output .= str_repeat("=", 54) . $this->eol();
+		$output .= "{$info["type"]} -- Code: {$info["code"]} -- Severity: {$info["severity"]}" . $this->eol(2);
+		$output .= "{$info["message"]}" . $this->eol();
+		$output .= $this->eol(2);
 		return $output;
 	}
 
