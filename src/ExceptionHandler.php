@@ -18,11 +18,6 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	protected $env;
 
 	/**
-	 * an optional logger
-	 */
-	// protected $logger;
-
-	/**
 	 * a dev environment
 	 */
 	const ENV_DEV   = 1;
@@ -69,17 +64,29 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	}
 
 	/**
+	 *
+	 */
+	function eol($multiplier = 1, $br = false){
+		$eol = PHP_EOL . ($br ? "<br/>" : "");
+		return str_repeat($eol, $multiplier);
+	}
+
+	/**
+	 *
+	 */
+	function is_cli(){
+		return substr(strtolower(php_sapi_name()), 0, 3) == "cli";
+	}
+
+	/**
 	 * @param Exception $e The thrown/uncaught exception
 	 */
 	function __invoke(){
 		list($e) = func_get_args();
 
-		$output = PHP_EOL.PHP_EOL;
-
 		if(!($e InstanceOf \Exception)){
 			// if we caught something that wasn't an exception, the world is ending.
-			$output .= "Something VERY wrong is happening." . PHP_EOL;
-			echo $output . PHP_EOL . PHP_EOL;
+			echo "Something VERY wrong is happening." . $this->$eol(3);
 			exit(1);
 		}
 
@@ -119,14 +126,48 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		$message = $e->getMessage();
 		$code    = $e->getCode();
 
-		$output .= "{$file}:{$line}" . PHP_EOL;
-		$output .= str_repeat("=", 54) . PHP_EOL;
-		$output .= "{$type} -- Code: {$code} -- Severity: {$severity}" . PHP_EOL . PHP_EOL;
-		$output .= "{$message}" . PHP_EOL;
+		$info = [
+			"file"     => $file,
+			"line"     => $line,
+			"type"     => $type,
+			"code"     => $code,
+			"severity" => $severity,
+			"message"  => $message,
+		];
 
-		echo $output . PHP_EOL . PHP_EOL;
+		if($this->is_cli()){
+			echo $this->outCli($info);
+		}else{
+			echo $this->outHtml($info);
+		}
+
 		exit($e->getCode());
 
+	}
+
+	/**
+	 *
+	 */
+	function outHtml($info){
+		$output = "";
+		$output .= "<p>{$info["file"]}:{$info["line"]}</p>";
+		$output .= "<hr />";
+		$output .= "<p>{$info["type"]} -- Code: {$info["code"]} -- Severity: {$info["severity"]}<p>";
+		$output .= "<p>{$info["message"]}</p>";
+		return $output;
+	}
+
+	/**
+	 *
+	 */
+	function outCli($info){
+		$output = $this->$eol(2);
+		$output .= "{$info["file"]}:{$info["line"]}" . $this->$eol();
+		$output .= str_repeat("=", 54) . $this->$eol();
+		$output .= "{$info["type"]} -- Code: {$info["code"]} -- Severity: {$info["severity"]}" . $this->$eol(2);
+		$output .= "{$info["message"]}" . $this->$eol();
+		$output .= $this->$eol(2);
+		return $output;
 	}
 
 }
