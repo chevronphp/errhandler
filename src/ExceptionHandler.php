@@ -86,7 +86,11 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 
 		if(!($e InstanceOf \Exception)){
 			// if we caught something that wasn't an exception, the world is ending.
-			echo "Something VERY wrong is happening." . $this->$eol(3);
+			$output = $this->nuclearOption();
+			if($this->is_cli()){
+				$output = strip_tags($output);
+			}
+			echo $output;
 			exit(1);
 		}
 
@@ -136,9 +140,9 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		];
 
 		if($this->is_cli()){
-			echo $this->outCli($info);
+			echo $this->toCli($info);
 		}else{
-			echo $this->outHtml($info);
+			echo $this->toHtml($info);
 		}
 
 		exit($e->getCode());
@@ -148,18 +152,15 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	/**
 	 *
 	 */
-	function outHtml($info){
+	function toHtml($info){
 		$output = "";
-		$output .= "<div class=\"exception\">";
+		$output .= "<div id=\"chevron\" class=\"exceptionhandler\">";
 		$output .= "<p class=\"location\">{$info["file"]}:{$info["line"]}</p>";
 		$output .= "<hr />";
 		$output .= "<p class=\"type\">";
 			$output .= "(Type) <strong>{$info["type"]}</strong> -- ";
 			$output .= "(Code) <strong>{$info["code"]}</strong> -- ";
 			$output .= "(Severity) <strong>{$info["severity"]}</strong>";
-			// $output .= "Type: <strong>{$info["type"]}</strong> -- ";
-			// $output .= "Code: <strong>{$info["code"]}</strong> -- ";
-			// $output .= "Severity: <strong>{$info["severity"]}</strong>";
 		$output .= "</p>";
 		$output .= "<p class=\"message\">{$info["message"]}</p>";
 		$output .= "</div>";
@@ -169,14 +170,18 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	/**
 	 *
 	 */
-	function outCli($info){
+	function toCli($info){
 		$output = $this->eol(2);
 		$output .= "{$info["file"]}:{$info["line"]}" . $this->eol();
 		$output .= str_repeat("=", 54) . $this->eol();
-		$output .= "{$info["type"]} -- Code: {$info["code"]} -- Severity: {$info["severity"]}" . $this->eol(2);
+		$output .= "(Type) {$info["type"]} ** (Code) {$info["code"]} ** (Severity) {$info["severity"]}" . $this->eol(2);
 		$output .= "{$info["message"]}" . $this->eol();
 		$output .= $this->eol(2);
 		return $output;
+	}
+
+	function nuclearOption(){
+		return "<h1>Something VERY wrong is happening and the world is most likely ending.</h1>" . $this->eol(3);
 	}
 
 }

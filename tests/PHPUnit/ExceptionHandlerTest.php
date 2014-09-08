@@ -21,7 +21,7 @@ class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
 		$expected = PHP_EOL.PHP_EOL;
 		$expected .= __FILE__ .":". 8 . PHP_EOL;
 		$expected .= "====================================" . PHP_EOL;
-		$expected .= "Exception -- Code: 999 -- Severity: 999" . PHP_EOL;
+		$expected .= "(Type) Exception ** (Code) 999 ** (Severity) 999" . PHP_EOL;
 		$expected .= "Uncaught Exception!!" . PHP_EOL;
 		$expected .=  PHP_EOL . PHP_EOL;
 
@@ -43,7 +43,7 @@ class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
 		$expected =  PHP_EOL. PHP_EOL;
 		$expected .= __FILE__ .":". 40 . PHP_EOL;
 		$expected .= "====================================" . PHP_EOL;
-		$expected .= "ErrorException -- Code: 90053 -- Severity: " . E_USER_NOTICE . PHP_EOL . PHP_EOL;
+		$expected .= "(Type) ErrorException ** (Code) 90053 ** (Severity) " . E_USER_NOTICE . PHP_EOL . PHP_EOL;
 		$expected .= "Uncaught ErrorException!!" . PHP_EOL;
 		$expected .=  PHP_EOL . PHP_EOL;
 
