@@ -64,21 +64,6 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	}
 
 	/**
-	 *
-	 */
-	function eol($multiplier = 1, $br = false){
-		$eol = PHP_EOL . ($br ? "<br/>" : "");
-		return str_repeat($eol, $multiplier);
-	}
-
-	/**
-	 *
-	 */
-	function is_cli(){
-		return substr(strtolower(php_sapi_name()), 0, 3) == "cli";
-	}
-
-	/**
 	 * @param Exception $e The thrown/uncaught exception
 	 */
 	function __invoke(){
@@ -114,6 +99,21 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 
 		exit($e->getCode());
 
+	}
+
+	/**
+	 *
+	 */
+	function eol($multiplier = 1, $br = false){
+		$eol = PHP_EOL . ($br ? "<br/>" : "");
+		return str_repeat($eol, $multiplier);
+	}
+
+	/**
+	 *
+	 */
+	function is_cli(){
+		return substr(strtolower(php_sapi_name()), 0, 3) == "cli";
 	}
 
 	/**
