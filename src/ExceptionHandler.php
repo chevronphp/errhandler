@@ -91,28 +91,20 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 			exit(1);
 		}
 
-		$type = $this->getClass($e);
-
-		$severity = $this->getSeverity($e);
-
-		if($this->logger){
-			$this->logger->error($type, [
-				"message"  => $e->getMessage(),
-				"severity" => $severity,
-				"file"     => $e->getFile(),
-				"line"     => $e->getLine(),
-				"code"     => $e->getCode(),
-			]);
-		}
-
 		$info = [
 			"file"     => $this->hideFile($e->getFile()),
 			"line"     => $e->getLine(),
-			"type"     => $type,
+			"type"     => $this->getClass($e),
 			"code"     => $e->getCode(),
-			"severity" => $severity,
+			"severity" => $this->getSeverity($e),
 			"message"  => $e->getMessage(),
+			"class"    => get_class($e),
+			"path"     => $e->getFile(),
 		];
+
+		$this->logException($info);
+
+		unset($info["path"], $info["class"]); // hide some info after logging
 
 		if($this->is_cli()){
 			echo $this->toCli($info);
@@ -151,6 +143,15 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		}
 
 		return $severity;
+	}
+
+	/**
+	 *
+	 */
+	function logException(array $context = []){
+		if($this->logger){
+			$this->logger->error($context["class"], $context);
+		}
 	}
 
 	/**
