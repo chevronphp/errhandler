@@ -87,28 +87,13 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		if(!($e InstanceOf \Exception)){
 			// if we caught something that wasn't an exception, the world is ending.
 			$output = $this->nuclearOption();
-			if($this->is_cli()){
-				$output = strip_tags($output);
-			}
-			echo $output;
+			echo $this->is_cli() ? strip_tags($output) : $output;
 			exit(1);
 		}
 
-		$type = get_class($e);
-		if($this->env != static::ENV_DEV){
-			$type = trim(substr($type, strrpos($type, "\\")), "\\");
-		}
+		$type = $this->getClass($e);
 
-		// use the error code unless it has a severity
-		$severity = $e->getCode();
-		if($e InstanceOf \ErrorException){
-			$severity = $e->getSeverity();
-		}
-
-		// change the severity int for a descriptive string
-		if(isset($this->e_consts[$severity])){
-			$severity = $this->e_consts[$severity];
-		}
+		$severity = $this->getSeverity($e);
 
 		if($this->logger){
 			$this->logger->error($type, [
@@ -120,23 +105,13 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 			]);
 		}
 
-		// cleaup if we're not in DEV, strip the path off the file for security
-		$file = $e->getFile();
-		if($this->env != static::ENV_DEV){
-			$file    = pathinfo($file, PATHINFO_BASENAME);
-		}
-
-		$line    = $e->getLine();
-		$message = $e->getMessage();
-		$code    = $e->getCode();
-
 		$info = [
-			"file"     => $file,
-			"line"     => $line,
+			"file"     => $this->hideFile($e->getFile()),
+			"line"     => $e->getLine(),
 			"type"     => $type,
-			"code"     => $code,
+			"code"     => $e->getCode(),
 			"severity" => $severity,
-			"message"  => $message,
+			"message"  => $e->getMessage(),
 		];
 
 		if($this->is_cli()){
@@ -147,6 +122,46 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 
 		exit($e->getCode());
 
+	}
+
+	/**
+	 *
+	 */
+	function getClass(\Exception $e){
+		$type = get_class($e);
+		if($this->env != static::ENV_DEV){
+			$type = trim(substr($type, strrpos($type, "\\")), "\\");
+		}
+		return $type;
+	}
+
+	/**
+	 *
+	 */
+	function getSeverity(\Exception $e){
+		// use the error code unless it has a severity
+		$severity = $e->getCode();
+		if($e InstanceOf \ErrorException){
+			$severity = $e->getSeverity();
+		}
+
+		// change the severity int for a descriptive string
+		if(isset($this->e_consts[$severity])){
+			$severity = $this->e_consts[$severity];
+		}
+
+		return $severity;
+	}
+
+	/**
+	 *
+	 */
+	function hideFile($file){
+		// cleaup if we're not in DEV, strip the path off the file for security
+		if($this->env != static::ENV_DEV){
+			$file = pathinfo($file, PATHINFO_BASENAME);
+		}
+		return $file;
 	}
 
 	/**
@@ -180,8 +195,11 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		return $output;
 	}
 
+	/**
+	 *
+	 */
 	function nuclearOption(){
-		return "<h1>Something VERY wrong is happening and the world is most likely ending.</h1>" . $this->eol(3);
+		return "<h1>Please do not use the ExceptionHandler for non-exceptions.</h1>" . $this->eol(3);
 	}
 
 }
