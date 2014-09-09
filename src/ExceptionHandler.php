@@ -77,19 +77,19 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		}
 
 		$info = [
-			"file"     => $this->hideFile($e->getFile()),
+			"file"     => $e->getFile(),
 			"line"     => $e->getLine(),
-			"type"     => $this->getClass($e),
+			"type"     => get_class($e),
 			"code"     => $e->getCode(),
 			"severity" => $this->getSeverity($e),
 			"message"  => $e->getMessage(),
-			"class"    => get_class($e),
-			"path"     => $e->getFile(),
 		];
 
 		$this->logException($info);
 
-		unset($info["path"], $info["class"]); // hide some info after logging
+		// hide some info after logging
+		$info["file"] = $this->hideFile($e);
+		$info["type"] = $this->getClass($e);
 
 		if($this->is_cli()){
 			echo $this->toCli($info);
@@ -157,8 +157,9 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	/**
 	 *
 	 */
-	function hideFile($file){
+	function hideFile(\Exception $e){
 		// cleaup if we're not in DEV, strip the path off the file for security
+		$file = $e->getFile();
 		if($this->env != static::ENV_DEV){
 			$file = pathinfo($file, PATHINFO_BASENAME);
 		}
