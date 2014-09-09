@@ -89,7 +89,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 
 		// hide some info after logging
 		$info["file"] = $this->hideFile($e);
-		$info["type"] = $this->getClass($e);
+		$info["type"] = $this->hideClass($e);
 
 		if($this->is_cli()){
 			echo $this->toCli($info);
@@ -119,7 +119,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	/**
 	 *
 	 */
-	function getClass(\Exception $e){
+	function hideClass(\Exception $e){
 		$type = get_class($e);
 		if($this->env != static::ENV_DEV){
 			$type = trim(substr($type, strrpos($type, "\\")), "\\");
@@ -150,7 +150,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	 */
 	function logException(array $context = []){
 		if($this->logger){
-			$this->logger->error($context["class"], $context);
+			$this->logger->error($context["type"], $context);
 		}
 	}
 
