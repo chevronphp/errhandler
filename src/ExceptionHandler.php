@@ -149,7 +149,7 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 	 *
 	 */
 	function logException(array $context = []){
-		if($this->logger){
+		if($this->logger InstanceOf Log\LoggerInterface){
 			$this->logger->error($context["type"], $context);
 		}
 	}
