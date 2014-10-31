@@ -24,7 +24,7 @@ class ExceptionLoggerTest extends PHPUnit_Framework_TestCase {
 
 		$inst($secondE, ["additional" => "info"]);
 
-		$this->assertEquals($logger->getLog(), "error|25|11");
+		$this->assertEquals($logger->getLog(), "error|Logging Exception|11");
 
 	}
 

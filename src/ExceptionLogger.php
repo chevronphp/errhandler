@@ -30,31 +30,25 @@ class ExceptionLogger implements ExceptionLoggerInterface {
 	function logException(\Exception $e, array $context = []){
 
 		if($this->logger InstanceOf Log\LoggerInterface){
-			$error = [
-				"e.type"      => get_class($e),
-				"e.message"   => $e->getMessage(),
-				"e.code"      => $e->getCode(),
-				"e.file"      => $e->getFile(),
-				"e.line"      => $e->getLine(),
-			];
-
-			$error = $error + $context;
 
 			$i = 1;
-			$prev = $e->getPrevious();
-			while($prev && $i){
-				$error += [
-					"e.prev.[{$i}].type"    => get_class($prev),
-					"e.prev.[{$i}].message" => $prev->getMessage(),
-					"e.prev.[{$i}].code"    => $prev->getCode(),
-					"e.prev.[{$i}].file"    => $prev->getFile(),
-					"e.prev.[{$i}].line"    => $prev->getLine(),
+
+			while($e && $i){
+							$context += [
+					"e.[{$i}].type"    => get_class($e),
+					"e.[{$i}].message" => $e->getMessage(),
+					"e.[{$i}].code"    => $e->getCode(),
+					"e.[{$i}].file"    => $e->getFile(),
+					"e.[{$i}].line"    => $e->getLine(),
 				];
-				$prev = $prev->getPrevious();
+
+				$e = $e->getPrevious();
+
 				$i += 1;
 			}
 
-			$this->logger->error($e->getCode(), $error);
+			$this->logger->error("Logging Exception", $context);
 		}
 	}
 }
+
