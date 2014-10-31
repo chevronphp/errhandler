@@ -5,7 +5,7 @@ ExceptionHandler basically catches any uncaught exception and sanitizes it, and 
 
 Peruse the tests or, if present, the examples directory to see usage.
 
-See [packagist](https://packagist.org/packages/chevron/errhandler) for version/installation info. At the moment, I recommend using `"chevron/errhandler":"~1.0"`.
+See [packagist](https://packagist.org/packages/chevron/errhandler) for version/installation info.
 
 [![Latest Stable Version](https://poser.pugx.org/chevron/errhandler/v/stable.svg)](https://packagist.org/packages/chevron/errhandler)
 [![Build Status](https://travis-ci.org/chevronphp/errhandler.svg?branch=master)](https://travis-ci.org/chevronphp/errhandler)
