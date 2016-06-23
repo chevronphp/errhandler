@@ -34,7 +34,7 @@ class ExceptionLogger implements ExceptionLoggerInterface {
 			$i = 1;
 
 			while($e && $i){
-							$context += [
+				$context += [
 					"e.[{$i}].type"    => get_class($e),
 					"e.[{$i}].message" => $e->getMessage(),
 					"e.[{$i}].code"    => $e->getCode(),

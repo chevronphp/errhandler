@@ -204,4 +204,21 @@ class ExceptionHandler implements Log\LoggerAwareInterface {
 		return "<h1>Please do not use the ExceptionHandler for non-exceptions.</h1>" . $this->eol(3);
 	}
 
+	function chain(\Exception $e){
+		$info = [];
+		while($e){
+			$info[] = [
+				"e.type"     => get_class($e),
+				"e.message"  => $e->getMessage(),
+				"e.code"     => $e->getCode(),
+				"e.severity" => $this->getSeverity($e),
+				"e.file"     => $e->getFile(),
+				"e.line"     => $e->getLine(),
+			];
+
+			$e = $e->getPrevious();
+		}
+		return $info;
+	}
+
 }
