@@ -16,6 +16,6 @@ class ErrorHandler {
 	 */
 	function __invoke(){
 		list($errno, $errstr, $errfile, $errline) = func_get_args();
-		throw new \ErrorException($errstr, 90053, $errno, $errfile, $errline);
+		throw new \ErrorException($errstr, 500, $errno, $errfile, $errline);
 	}
 }
